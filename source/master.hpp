@@ -1,9 +1,7 @@
 #pragma once
 
-#include <SFML/System/Time.hpp>
-#include <SFML/Audio.hpp>
+#include <vector>
 
-#include "outStream.hpp"
 #include "instrument.hpp"
 
 class Master {
@@ -14,6 +12,5 @@ public:
 	void addInstrument(Instrument& instrument);
 
 private:
-	OutStream m_outStream;
 	std::vector<Instrument> m_instruments;
 };

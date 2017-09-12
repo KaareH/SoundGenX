@@ -13,7 +13,7 @@ public:
 private:
 	void updatePhaseDelta();
 
-	float phase = 0.0f;
-	float phaseDelta;
-	float sampleRate = 44100.0f;
+	double phase = 0.0f;
+	double phaseDelta;
+	double sampleRate = 44100.0f;
 };

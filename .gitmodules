@@ -4,3 +4,6 @@
 [submodule "SFML"]
 	path = SFML
 	url = https://github.com/SFML/SFML
+[submodule "rtaudio"]
+	path = rtaudio
+	url = https://github.com/thestk/rtaudio

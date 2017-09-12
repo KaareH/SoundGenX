@@ -1,15 +1,6 @@
 #include "master.hpp"
 
-#include <cmath>
-#include <cassert>
-
 Master::Master() {
-	std::function<bool(float* outputData, int numSamples)> function = [this](float* outputData, int numSamples) {
-		return onGetData(outputData, numSamples);
-	};
-
-	m_outStream.func = function;
-	m_outStream.play();
 }
 
 bool Master::onGetData(float* outputData, int numSamples) {

@@ -4,11 +4,13 @@
 
 #include "instrument.hpp"
 
+#define SAMPLE_RATE 44100.0f
+
 class Master {
 public:
 	Master();
 
-	bool onGetData(float* outputData, int numSamples);
+	bool onGetData(float* outputData, unsigned int numSamples, unsigned int channels);
 	void addInstrument(Instrument& instrument);
 
 private:

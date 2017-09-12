@@ -29,7 +29,6 @@ typedef float MY_TYPE;
 #endif
 
 Master master;
-Master master2;
 
 void usage( void ) {
 	// Error function in case of incorrect command-line
@@ -71,8 +70,7 @@ int audioCallback( void *outputBuffer, void * /*inputBuffer*/, unsigned int nBuf
 	if ( status )
 		std::cout << "Stream underflow detected!" << std::endl;
 
-	master.onGetData(buffer, nBufferFrames);
-	master2.onGetData(buffer+nBufferFrames, nBufferFrames);
+	master.onGetData(buffer, nBufferFrames, channels);
 
 	frameCounter += nBufferFrames;
 	if ( checkCount && ( frameCounter >= nFrames ) ) return callbackReturnValue;
@@ -84,7 +82,6 @@ int main( int argc, char *argv[] )
 {
 	Instrument instrument;
 	master.addInstrument(instrument);
-	master2.addInstrument(instrument);
 
 	unsigned int bufferFrames, fs, device = 0, offset = 0;
 

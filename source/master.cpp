@@ -3,13 +3,15 @@
 Master::Master() {
 }
 
-bool Master::onGetData(float* outputData, int numSamples) {
-	double sampleRate = 44100;
+bool Master::onGetData(float* outputData, unsigned int numSamples, unsigned int channels) {
+
 	for(auto &instrument : m_instruments) {
 		float data[numSamples];
 		instrument.getSamplesAt(data, numSamples);
 		for(int i = 0; i < numSamples; i++) {
-			outputData[i] = data[i];
+			for(int ch = 0; ch < channels; ch++) {
+				outputData[i + numSamples * ch] = data[i];
+			}
 		}
 	}
 

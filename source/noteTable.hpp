@@ -5,19 +5,17 @@ public:
 	NoteTable(double aHz1 = 440);
 	~NoteTable();
 
-	const double getFreq(int note);
+	const double getNoteFreq(int note);
 	const double getTuning();
 
 private:
-	const int middleA = 69;
-	const int middleC = middleA - 9;
-	const int middleOctave = 4;
-	const int lowestOctave = -2;
-	const int highestOctave = 10;
-	const int octaveSpan = lowestOctave + 1 + highestOctave;
-	const int noteNum = 12 * octaveSpan;
-	const int lowestNote = middleC + 12 * (lowestOctave - middleOctave);
-	const int higestNote = middleC + 12 * (highestOctave - middleOctave);
+	const int middleC = 60;
+	const int middleA = middleC + 9;
+	const int middleCMidi = 60;
+	const int lowestNote = 0;
+	const int highestNote = 127;
+	const unsigned int noteNum = highestNote - lowestNote;
+
 	const double aHz;
 
 	double* m_table;

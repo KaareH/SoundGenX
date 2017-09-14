@@ -14,7 +14,6 @@
 #include <cstdlib>
 
 #include "master.hpp"
-#include "noteTable.hpp"
 #include "virtualMidiKeyboard.hpp"
 
 typedef float MY_TYPE;
@@ -32,18 +31,6 @@ typedef float MY_TYPE;
 #endif
 
 Master master;
-
-void usage( void ) {
-	// Error function in case of incorrect command-line
-	// argument specifications
-	std::cout << "\nuseage: playsaw N fs <device> <channelOffset> <time>\n";
-	std::cout << "    where N = number of channels,\n";
-	std::cout << "    fs = the sample rate,\n";
-	std::cout << "    device = optional device to use (default = 0),\n";
-	std::cout << "    channelOffset = an optional channel offset on the device (default = 0),\n";
-	std::cout << "    and time = an optional time duration in seconds (default = no limit).\n\n";
-	exit( 0 );
-}
 
 void errorCallback( RtAudioError::Type type, const std::string &errorText )
 {
@@ -81,18 +68,13 @@ int audioCallback( void *outputBuffer, void * /*inputBuffer*/, unsigned int nBuf
 }
 //====================================================================================================================//
 
-int main( int argc, char *argv[] ) {
+int main() {
 	sf::Window window(sf::VideoMode(800, 600), "My window");
 
-
-	NoteTable noteTable;
 	Instrument instrument;
 	master.addInstrument(instrument);
 
 	unsigned int bufferFrames, fs, device = 0, offset = 0;
-
-	// minimal command-line checking
-	if (argc < 3 || argc > 6 ) usage();
 
 	RtAudio dac;
 	if ( dac.getDeviceCount() < 1 ) {
@@ -100,14 +82,8 @@ int main( int argc, char *argv[] ) {
 		exit( 1 );
 	}
 
-	channels = (unsigned int) atoi( argv[1] );
-	fs = (unsigned int) atoi( argv[2] );
-	if ( argc > 3 )
-		device = (unsigned int) atoi( argv[3] );
-	if ( argc > 4 )
-		offset = (unsigned int) atoi( argv[4] );
-	if ( argc > 5 )
-		nFrames = (unsigned int) (fs * atof( argv[5] ));
+	channels = 2;
+	fs = 44100;
 	if ( nFrames > 0 ) checkCount = true;
 
 	double *data = (double *) calloc( channels, sizeof( double ) );

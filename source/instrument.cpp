@@ -15,7 +15,7 @@ void Instrument::getSamplesAt(float* outputData, int numSamples) {
 
 		double hz = noteTable.getNoteFreq(note);
 		double hz2 = hz * 2;
-		double hz3 = hz2 * 2;
+		double hz3 = hz * 4;
 
 		phase = tempPhase;
 		for(int i = 0; i < numSamples; i++) {

@@ -9,10 +9,13 @@
 
 #include <RtAudio.h>
 #include <cmath>
+#include <SFML/Window.hpp>
 #include <iostream>
 #include <cstdlib>
 
 #include "master.hpp"
+#include "noteTable.hpp"
+#include "virtualMidiKeyboard.hpp"
 
 typedef float MY_TYPE;
 #define FORMAT RTAUDIO_FLOAT32
@@ -78,8 +81,11 @@ int audioCallback( void *outputBuffer, void * /*inputBuffer*/, unsigned int nBuf
 }
 //====================================================================================================================//
 
-int main( int argc, char *argv[] )
-{
+int main( int argc, char *argv[] ) {
+	sf::Window window(sf::VideoMode(800, 600), "My window");
+
+
+	NoteTable noteTable;
 	Instrument instrument;
 	master.addInstrument(instrument);
 
@@ -123,6 +129,8 @@ int main( int argc, char *argv[] )
 	options.flags |= RTAUDIO_SCHEDULE_REALTIME;
 	options.flags |= RTAUDIO_NONINTERLEAVED;
 
+	VirtualMidiKeyboard keyboard(&master.m_instruments.back());
+
 	try {
 		dac.openStream( &oParams, NULL, FORMAT, fs, &bufferFrames, &audioCallback, (void *)data, &options, &errorCallback );
 		dac.startStream();
@@ -132,22 +140,32 @@ int main( int argc, char *argv[] )
 		goto cleanup;
 	}
 
-	if ( checkCount ) {
-		while ( dac.isStreamRunning() == true ) SLEEP( 100 );
-	}
-	else {
-		char input;
-		//std::cout << "Stream latency = " << dac.getStreamLatency() << "\n" << std::endl;
-		std::cout << "\nPlaying ... press <enter> to quit (buffer size = " << bufferFrames << ").\n";
-		std::cin.get( input );
 
-		try {
-			// Stop the stream
-			dac.stopStream();
+	// run the program as long as the window is open
+	while (window.isOpen())
+	{
+		// check all the window's events that were triggered since the last iteration of the loop
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			// "close requested" event: we close the window
+			if (event.type == sf::Event::Closed)
+				window.close();
+
+			if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
+				keyboard.handleKeyboardInput(event);
+			}
+
+
 		}
-		catch ( RtAudioError& e ) {
-			e.printMessage();
-		}
+	}
+
+	try {
+		// Stop the stream
+		dac.stopStream();
+	}
+	catch ( RtAudioError& e ) {
+		e.printMessage();
 	}
 
 	cleanup:

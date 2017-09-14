@@ -10,9 +10,11 @@ class Master {
 public:
 	Master();
 
-	bool onGetData(float* outputData, unsigned int numSamples, unsigned int channels);
+	void onGetData(float* outputData, unsigned int numSamples, unsigned int channels);
 	void addInstrument(Instrument& instrument);
 
+
+	std::vector<Instrument> m_instruments; // Temporary public
 private:
-	std::vector<Instrument> m_instruments;
+	//std::vector<Instrument> m_instruments;
 };

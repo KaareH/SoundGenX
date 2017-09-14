@@ -3,6 +3,7 @@
 class NoteTable {
 public:
 	NoteTable(double aHz1 = 440);
+	NoteTable(const NoteTable &obj);
 	~NoteTable();
 
 	const double getNoteFreq(int note);

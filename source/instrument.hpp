@@ -6,6 +6,7 @@
 
 #include "common.hpp"
 #include "noteTable.hpp"
+#include "voice.hpp"
 
 class Instrument {
 public:
@@ -21,6 +22,10 @@ private:
 	double phaseDelta;
 	double sampleRate = 44100.0f;
 	NoteTable noteTable;
+
+	Voice* voices;
+	unsigned int voiceCount;
+	unsigned int latestVoice = 0;
 
 	std::unordered_map<int, uint8_t> keysDown; // Never use uncontrolled heap in audio
 	
